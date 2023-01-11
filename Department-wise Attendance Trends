@@ -1,0 +1,80 @@
+SELECT ResourceType, Total, Present, Total-Present as Absent, On_Leave as 'Leave', A_Noon as 'A/Noon', Night, U_C_Absent as 'U/C Absent', D_OFF as 'D/OFF', T_Duty_att as 'T/Duty/att', Quarantine, On_Course as 'On Course', FSR_ED as 'FSR/ED', GDT, Security_Duty as 'Security Duty'
+FROM
+(select rt.id,RT.c_resourceType AS ResourceType,count(*) as Total,
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_attendance ,app_fd_hrm_employee emp, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id and {{zee}} AND c_hrm_emp_add_dispos_id = '' AND dep.name = 'JF-17 MRO') AS Present,
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'LEAVE' AND dep.name = 'JF-17 MRO') AS On_Leave,
+
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'A/NOON' AND dep.name = 'JF-17 MRO') AS A_Noon,
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'NIGHT' AND dep.name = 'JF-17 MRO') AS Night,
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'U/C ABSENT' AND dep.name = 'JF-17 MRO') AS U_C_Absent,
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'D/OFF' AND dep.name = 'JF-17 MRO') AS D_OFF,
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'T/DUTY/ATT' AND dep.name = 'JF-17 MRO') AS T_Duty_att,
+
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'QUARANTINE' AND dep.name = 'JF-17 MRO') AS Quarantine,
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'ON COURSE' AND dep.name = 'JF-17 MRO') AS On_Course,
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'FSR/ED' AND dep.name = 'JF-17 MRO') AS FSR_ED,
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and 
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'GDT' AND dep.name = 'JF-17 MRO') AS GDT,
+
+(select COUNT(DISTINCT c_employeeFkIdd)  from app_fd_hrm_employee emp, app_fd_hrm_attendance, app_fd_hrm_emp_add_dispos adddis, app_fd_hrm_emp_disposal dis, dir_employment empl, dir_department dep
+where emp.c_serviceNumber = empl.userId AND empl.departmentId = dep.id and
+c_employeeFkIdd = emp.c_serviceNumber and emp.c_resourceTypeFkId=rt.id AND adddis.id = c_hrm_emp_add_dispos_id AND dis.id = adddis.c_disposalFkId
+and {{zee}} AND dis.c_disposal = 'SECURITY DUTY' AND dep.name = 'JF-17 MRO') AS Security_Duty
+
+
+
+from app_fd_hrm_employee emp, app_fd_hrm_resource_type Rt, dir_employment empl,dir_department dd
+
+where empl.userId = emp.c_serviceNumber
+and DD.id = empl.departmentId
+and RT.id = emp.c_resourceTypeFkId
+and DD.name = 'JF-17 MRO'
+GROUP BY RT.c_resourceType) a
